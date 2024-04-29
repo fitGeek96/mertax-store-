@@ -1,0 +1,247 @@
+@import url("https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Reem+Kufi+Fun:wght@400..700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Fleur+De+Leah&display=swap");
+
+* {
+  font-family: "Reem Kufi Fun", sans-serif;
+  font-optical-sizing: auto;
+}
+
+main {
+  min-height: 80vh;
+}
+
+a {
+  text-decoration: none;
+  font-weight: bold;
+}
+
+h1,
+h2 {
+  color: #ecb7ea;
+}
+
+.login-headline {
+  text-align: center;
+  font-family: "Fleur De Leah", cursive;
+  font-size: 4rem;
+  padding: 1rem 0;
+  color: #9253ea;
+}
+
+.bg-light {
+  color: black;
+}
+
+.hero-section {
+  padding: 100px 0;
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("../../assets/hero-image.jpg") center/cover no-repeat;
+  color: #fff;
+
+  border-radius: 20px; /* Adjust the radius as needed */
+  backdrop-filter: blur(10px); /* Blur effect */
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Border for better visibility */
+  padding: 20px; /* Adjust padding as needed */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.hero-heading {
+  font-size: 3rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+h1.hero-heading {
+  font-family: "Fleur De Leah", cursive;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 7rem;
+}
+
+.hero-subheading {
+  font-size: 1.5rem;
+  margin-bottom: 30px;
+}
+
+.hero-btn {
+  margin-top: 20px;
+  border-color: #fff;
+  color: #fff;
+}
+
+.hero-btn:hover {
+  background-color: #fff;
+  color: #000;
+}
+
+.hero-img {
+  max-width: 100%;
+  border-radius: 10px;
+}
+
+.table-custom {
+  border-collapse: separate;
+  border-spacing: 0 10px;
+}
+
+.table-custom th {
+  background-color: #f8f9fa;
+  color: #212529;
+  font-weight: bold;
+}
+
+.table-custom td,
+.table-custom th {
+  padding: 10px;
+}
+
+.table-custom tbody tr:hover {
+  background-color: #f2f2f2;
+}
+
+.btn-custom {
+  background-color: #007bff;
+  color: #fff;
+  border-color: #007bff;
+}
+
+.btn-custom:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
+
+.rating span {
+  margin: 0.1rem;
+}
+
+.rating svg {
+  color: #f8e825;
+}
+
+.rating-text {
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding-left: 0.5rem;
+}
+
+.product-title {
+  /* Set a fixed height */
+  overflow: hidden; /* Hide overflow content */
+  text-overflow: ellipsis; /* Add ellipsis for long text */
+  white-space: nowrap; /* Prevent wrapping */
+}
+
+table td,
+table th {
+  text-align: center;
+}
+
+.review {
+  margin-top: 30px;
+}
+
+.review h2 {
+  font-size: 24px;
+  background: #f4f4f4;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+.review button {
+  margin-top: 10px;
+}
+
+.carousel-caption {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.navbar-bg-color {
+  background: rgba(218, 112, 214, 0.5); /* Light Pink (variant of purple) */
+}
+
+.glass-container {
+  background: rgba(255, 255, 255, 0.5); /* Glass effect */
+  border-radius: 20px; /* Adjust the radius as needed */
+  backdrop-filter: blur(10px); /* Blur effect */
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Border for better visibility */
+  padding: 20px; /* Adjust padding as needed */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08); /* Shadow for depth */
+}
+
+.order-details-card {
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.order-details-card .card-header {
+  background-color: #f8f9fa;
+  border-bottom: none;
+  border-radius: 15px 15px 0 0;
+}
+
+.order-details-card .card-body {
+  padding: 20px;
+}
+
+.order-details-card .table-sm td {
+  vertical-align: middle;
+  text-align: left;
+  padding: 0.7rem 1rem;
+}
+
+.order-details-card .btn-outline-info {
+  color: #17a2b8;
+  border-color: #17a2b8;
+}
+
+.order-details-card .btn-outline-info:hover {
+  color: #fff;
+  background-color: #ff6a00;
+  border-color: #ff6a00;
+}
+
+@media (max-width: 767px) {
+  header {
+    background: url("../headerBackG.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+}
+
+@media only screen and (max-width: 375px) {
+  /* iPhone X width */
+  .mb-3 {
+    margin-bottom: 1.5rem !important;
+  }
+
+  .text-center.mb-3 {
+    margin-bottom: 0.5rem !important;
+  }
+
+  .w-50 {
+    width: 50% !important;
+  }
+
+  .mt-3 {
+    margin-top: 1rem !important;
+  }
+
+  .text-center.mt-3 {
+    margin-top: 0.5rem !important;
+  }
+
+  .w-75 {
+    width: 75% !important;
+  }
+
+  .text-center.mt-3:last-child {
+    margin-bottom: 1rem !important;
+  }
+}

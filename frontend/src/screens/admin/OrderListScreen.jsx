@@ -45,8 +45,8 @@ const OrderListScreen = () => {
       <Table striped bordered hover responsive className="table-custom">
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Cliente</th>
+            <th>ID Commande</th>
+            {/* <th>Cliente</th> */}
             <th>Date</th>
             <th>Total</th>
             {/* <th>Payé</th> */}
@@ -56,8 +56,8 @@ const OrderListScreen = () => {
         <tbody>
           {orders?.map((order) => (
             <tr key={order?._id}>
-              <td>{order?._id.substring(0, 10)}</td>
-              <td>{order?.user && order?.user?.username.substring(0, 20)}</td>
+              <td>{order?._id?.substring(0, 10)}</td>
+              {/* <td>{order?.user && order?.user?.username?.substring(0, 20)}</td> */}
               <td>{order?.createdAt.substring(0, 10)}</td>
               <td className="text-danger">
                 {" "}

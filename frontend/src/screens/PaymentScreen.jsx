@@ -34,7 +34,7 @@ const PaymentScreen = () => {
 
   return (
     <FormContainer>
-      <CheckoutSteps step1 step2 step3 />
+      {/* <CheckoutSteps step1 step2 step3 /> */}
 
       <Form onSubmit={submitHandler}>
         <Form.Group controlId="paymentMethod" className="mt-5">

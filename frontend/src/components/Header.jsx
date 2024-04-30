@@ -44,6 +44,7 @@ const Header = () => {
           <LinkContainer to="/">
             <Navbar.Brand className="p-0 m-0">
               <img src={logo} alt="Logo" width={70} height={70} />
+              <Navbar.Text className="text-white">Mertax</Navbar.Text>
             </Navbar.Brand>
           </LinkContainer>
 
@@ -68,14 +69,14 @@ const Header = () => {
               <LinkContainer to="/cart">
                 <Nav.Link className="position-relative text-white">
                   <FaShoppingCart size={20} />
-                  {cartItems.length > 0 && (
+                  {cartItems?.length > 0 && (
                     <>
                       <Badge
                         pill
                         bg="danger"
                         className="position-absolute start-300 translate-middle"
                       >
-                        {cartItems.length}
+                        {cartItems?.length}
                       </Badge>
                     </>
                   )}

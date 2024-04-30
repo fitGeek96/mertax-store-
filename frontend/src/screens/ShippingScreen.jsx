@@ -38,7 +38,7 @@ const ShippingScreen = () => {
 
   return (
     <FormContainer>
-      <CheckoutSteps step1 step2 />
+      {/* <CheckoutSteps step1 step2 /> */}
       <h6 className="text-info">
         Remplissez les champs requis pour la livraison
       </h6>
@@ -75,7 +75,11 @@ const ShippingScreen = () => {
             onChange={(e) => setCity(e.target.value)}
           />
         </Form.Group>
-        <Button type="submit" variant="info" className="my-5 w-100 text-white fw-bold">
+        <Button
+          type="submit"
+          variant="info"
+          className="my-5 w-100 text-white fw-bold"
+        >
           Continuer
         </Button>
       </Form>

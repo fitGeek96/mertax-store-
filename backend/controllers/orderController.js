@@ -25,7 +25,6 @@ const addOrderItems = expressAsyncHandler(async (req, res) => {
         product: orderItem._id,
         _id: undefined,
       })),
-      user: req.user._id,
       shippingAddress,
       paymentMethod,
       itemsPrice,
@@ -53,10 +52,7 @@ const getMyOrders = expressAsyncHandler(async (req, res) => {
 // @access  Private/Admin
 
 const getOrderById = expressAsyncHandler(async (req, res) => {
-  const order = await Order.findById(req.params.id).populate(
-    "user",
-    "name email",
-  );
+  const order = await Order.findById(req.params.id);
 
   if (order) {
     res.status(200).json(order);
@@ -116,7 +112,7 @@ const updateOrderToDelivered = expressAsyncHandler(async (req, res) => {
 // @access  Private/Admin
 
 const getOrders = expressAsyncHandler(async (req, res) => {
-  const orders = await Order.find({}).populate("user", "id username");
+  const orders = await Order.find({});
   res.status(200).json(orders);
 });
 
@@ -126,7 +122,7 @@ const getOrders = expressAsyncHandler(async (req, res) => {
 
 const deleteOrder = expressAsyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id);
-  
+
   if (order) {
     await Order.deleteOne({ _id: req.params.id });
     res.status(200).json({

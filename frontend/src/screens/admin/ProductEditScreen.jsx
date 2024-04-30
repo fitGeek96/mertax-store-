@@ -20,6 +20,8 @@ const ProductEditScreen = () => {
   const [brand, setBrand] = useState("");
   const [category, setCategory] = useState("");
   const [countInStock, setCountInStock] = useState(0);
+  const [color, setColor] = useState();
+  const [size, setSize] = useState();
 
   const {
     data: product,
@@ -51,6 +53,7 @@ const ProductEditScreen = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+
     try {
       await updateProduct({
         _id: productId,
@@ -189,6 +192,7 @@ const ProductEditScreen = () => {
               className="rounded-pill"
             />
           </Form.Group>
+
           <Button
             variant="dark"
             type="submit"

@@ -42,7 +42,7 @@ const LoginScreen = () => {
 
   return (
     <>
-      <h2 className="login-headline">La Parisienne</h2>
+      <h2 className="login-headline">Mertax Store</h2>
       <FormContainer>
         <Form onSubmit={submitHandler} className="glass-container mx-auto">
           <h2>Se Connecter</h2>

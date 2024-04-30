@@ -8,6 +8,7 @@ import {
   Row,
   Col,
   Table,
+  Alert,
 } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
@@ -66,7 +67,7 @@ const OrderScreen = () => {
       </h3>
       <Row>
         <Col md={9}>
-          <Card className="order-details-card">
+          <Card className="order-details-card mb-3">
             <Card.Header>
               <h4 className="text-info">Informations sur la livraison</h4>
             </Card.Header>
@@ -74,7 +75,7 @@ const OrderScreen = () => {
               <Table striped bordered hover responsive className="table-sm">
                 <tbody>
                   <tr>
-                    <td>Nom et Prenom</td>
+                    <td>Nom et Prénom</td>
                     <td>
                       <strong>{order?.shippingAddress?.fullname}</strong>
                     </td>
@@ -98,64 +99,70 @@ const OrderScreen = () => {
                     <td>
                       {order?.isDelivered ? (
                         <p className="text-success">
-                          <strong> La Commande a bien été livrée </strong>
+                          <strong>La commande a bien été livrée</strong>
                         </p>
                       ) : (
                         <p className="text-danger">
-                          <strong> La Commande n'est pas encore livrée </strong>
+                          <strong>La commande n'est pas encore livrée</strong>
                         </p>
                       )}
                     </td>
                   </tr>
-                  <tr></tr>
                 </tbody>
               </Table>
             </Card.Body>
           </Card>
-          <ListGroup.Item className="mt-2">
-            <Card className="order-details-card">
-              <Card.Header>
-                <h4 className="text-info">Articles commandés</h4>
-              </Card.Header>
-              <Card.Body>
-                {order?.orderItems?.length === 0 ? (
-                  <Message variant={"info"}>Aucun article trouvé.</Message>
-                ) : (
-                  <Table hover responsive className="table-sm">
-                    <thead>
-                      <tr>
-                        <th>Image</th>
-                        <th>Nom</th>
-                        <th className="text-center">Quantité</th>
+          <Card className="order-details-card">
+            <Card.Header>
+              <h4 className="text-info">Articles commandés</h4>
+            </Card.Header>
+            <Card.Body>
+              {order?.orderItems?.length === 0 ? (
+                <Alert variant="info">Aucun article trouvé.</Alert>
+              ) : (
+                <Table hover responsive className="table-sm">
+                  <thead>
+                    <tr>
+                      <th>Image</th>
+                      <th>Nom</th>
+                      <th className="text-center">Quantité</th>
+                      <th className="text-center">Taille</th>
+                      <th className="text-center">Couleur</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {order?.orderItems?.map((item) => (
+                      <tr key={item.product} className="text-left">
+                        <td className="align-middle">
+                          <Image
+                            src={item.image}
+                            alt={item.name}
+                            fluid
+                            rounded
+                            style={{ maxWidth: "80px", maxHeight: "80px" }}
+                          />
+                        </td>
+                        <td className="align-middle">
+                          <Link to={`/products/${item.product}`}>
+                            {item.name}
+                          </Link>
+                        </td>
+                        <td className="align-middle text-center">{item.qty}</td>
+                        <td className="align-middle text-center">
+                          {item.size}
+                        </td>
+                        <td className="align-middle text-center">
+                          {item.color}
+                        </td>
                       </tr>
-                    </thead>
-                    <tbody>
-                      {order?.orderItems?.map((item) => (
-                        <tr key={item.product} className="text-left">
-                          <td className="align-middle">
-                            <Image
-                              src={item.image}
-                              alt={item.name}
-                              fluid
-                              rounded
-                              style={{ width: "80px", height: "auto" }}
-                            />
-                          </td>
-                          <td className="align-middle">
-                            <Link to={`/products/${item.product}`}>
-                              {item.name}
-                            </Link>
-                          </td>
-                          <td className="align-middle">{item.qty}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </Table>
-                )}
-              </Card.Body>
-            </Card>
-          </ListGroup.Item>
+                    ))}
+                  </tbody>
+                </Table>
+              )}
+            </Card.Body>
+          </Card>
         </Col>
+
         <Col md={3}>
           <Card className="order-details-card">
             <Card.Header>

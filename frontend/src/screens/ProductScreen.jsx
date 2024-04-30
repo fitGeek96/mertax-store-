@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Row,
@@ -8,6 +8,8 @@ import {
   Card,
   Button,
   Form,
+  ListGroupItem,
+  Carousel,
 } from "react-bootstrap";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import Rating from "../components/Rating";
@@ -26,11 +28,16 @@ const ProductScreen = () => {
   const { id: productId } = useParams();
 
   const [qty, setQty] = useState(1);
+  const [size, setSize] = useState(38);
+  const [color, setColor] = useState("Vert");
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const cart = useSelector((state) => state.cart);
+  const { cartItems } = cart;
 
   const {
     data: product,
@@ -47,31 +54,9 @@ const ProductScreen = () => {
   const { userInfo } = useSelector((state) => state.auth);
   const userId = userInfo?._id;
 
-  const addToCartHandler = () => {
-    dispatch(
-      addToCart({
-        ...product,
-        qty,
-      }),
-    );
-    navigate("/cart");
-  };
-
-  const submitHandler = async (e) => {
-    e.preventDefault();
-    try {
-      await createReview({
-        productId,
-        rating,
-        comment,
-      }).unwrap();
-      refetch();
-      toast.success("Votre commentaire a été envoyé");
-      setRating(0);
-      setComment("");
-    } catch (error) {
-      toast.error(error?.data?.message || error?.error);
-    }
+  const addToCartHandler = (product, qty, size, color) => {
+    dispatch(addToCart({ ...product, qty, size, color }));
+    console.log({ ...product, qty, size, color });
   };
 
   const formatPrice = (price) => {
@@ -92,24 +77,51 @@ const ProductScreen = () => {
       )}
       <Row>
         <Col md={5}>
-          <ListGroup variant="flush">
-            <ListGroup.Item>
-              <Image src={product?.image} alt={product?.name} fluid rounded />
-            </ListGroup.Item>
-          </ListGroup>
+          <Carousel>
+            <Carousel.Item>
+              <img
+                className="d-block w-100"
+                src={"/images/r1.png"}
+                alt={product?.name}
+              />
+            </Carousel.Item>
+            <Carousel.Item>
+              <img
+                className="d-block w-100"
+                src={"/images/r2.png"}
+                alt={product?.name}
+              />
+            </Carousel.Item>
+            <Carousel.Item>
+              <img
+                className="d-block w-100"
+                src={"/images/r3.png"}
+                alt={product?.name}
+              />
+            </Carousel.Item>
+            <Carousel.Item>
+              <img
+                className="d-block w-100"
+                src={"/images/r4.png"}
+                alt={product?.name}
+              />
+            </Carousel.Item>
+          </Carousel>
         </Col>
+
         <Col md={4}>
           <ListGroup variant="flush">
             <ListGroup.Item as="h4">{product?.name}</ListGroup.Item>
-            <ListGroup.Item>
+            {/* <ListGroup.Item>
               <div className="rating">
                 <FaStar color="#ffc107" />
                 <span>{product?.rating}</span>
                 <span className="ms-1">({product?.numReviews} avis)</span>
               </div>
-            </ListGroup.Item>
+            </ListGroup.Item> */}
             <ListGroup.Item>
-              <strong>Description:</strong> {product?.description}
+              <strong>Description:</strong> <br />
+              <h4>{product?.description}</h4>
             </ListGroup.Item>
           </ListGroup>
         </Col>
@@ -119,7 +131,7 @@ const ProductScreen = () => {
               <ListGroup.Item>
                 <Row>
                   <Col>Prix:</Col>
-                  <Col className="text-center">
+                  <Col className="text-center" as={"h6"}>
                     <strong>DA {formatPrice(product?.price)}</strong>
                   </Col>
                 </Row>
@@ -144,7 +156,15 @@ const ProductScreen = () => {
                       <Form.Control
                         as="select"
                         value={qty}
-                        onChange={(e) => setQty(Number(e.target.value))}
+                        onChange={(e) => {
+                          setQty(Number(e.target.value));
+                          addToCartHandler(
+                            product,
+                            Number(e.target.value),
+                            size,
+                            color,
+                          );
+                        }}
                         className="text-center p-0 m-auto w-50"
                       >
                         {Array.from(
@@ -160,12 +180,72 @@ const ProductScreen = () => {
                   </Row>
                 </ListGroup.Item>
               )}
+
+              <ListGroup.Item>
+                <Row>
+                  <Col>Taille:</Col>
+                  <Col>
+                    <Form.Control
+                      as="select"
+                      value={size}
+                      onChange={(e) => {
+                        setSize(e.target.value);
+                        addToCartHandler(product, qty, e.target.value, color);
+                      }}
+                      className="text-center p-0 m-auto w-50"
+                    >
+                      {product?.size.map((size) => (
+                        <option key={size} value={size}>
+                          {size}
+                        </option>
+                      ))}
+                    </Form.Control>
+                  </Col>
+                </Row>
+              </ListGroup.Item>
+
+              <ListGroup.Item>
+                <Row>
+                  <Col>Couleur:</Col>
+                  <Col>
+                    <Form.Control
+                      as="select"
+                      value={color}
+                      onChange={(e) => {
+                        setColor(e.target.value);
+                        addToCartHandler(product, qty, size, e.target.value);
+                      }}
+                      className="text-center p-0 m-auto w-50"
+                    >
+                      {product?.color.map((color) => (
+                        <option key={color} value={color}>
+                          {color}
+                        </option>
+                      ))}
+                    </Form.Control>
+                  </Col>
+                </Row>
+              </ListGroup.Item>
+              <ListGroup.Item>
+                <Row>
+                  <Col>Prix Total:</Col>
+                  <Col className="text-center text-danger">
+                    <strong>
+                      {" "}
+                      DA{" "}
+                      {cart?.totalPrice
+                        ? `${formatPrice(product?.price * qty)}`
+                        : "00.0"}{" "}
+                    </strong>
+                  </Col>
+                </Row>
+              </ListGroup.Item>
               <ListGroup.Item className="text-center">
                 <Button
                   variant="danger text-white"
                   size="lg"
                   disabled={product?.countInStock === 0}
-                  onClick={addToCartHandler}
+                  onClick={() => navigate("/shipping")}
                 >
                   Ajouter au panier
                 </Button>
@@ -174,7 +254,7 @@ const ProductScreen = () => {
           </Card>
         </Col>
       </Row>
-      <Row className="review">
+      {/* <Row className="review">
         <Col md={6}>
           <h2>
             <FaComment /> Commentaires
@@ -242,7 +322,7 @@ const ProductScreen = () => {
             </ListGroup.Item>
           </ListGroup>
         </Col>
-      </Row>
+      </Row> */}
     </>
   );
 };

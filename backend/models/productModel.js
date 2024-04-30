@@ -80,6 +80,17 @@ const productSchema = new mongoose.Schema(
       required: true,
       default: 0,
     },
+    size: {
+      type: [Number],
+      required: false,
+      default: [38],
+    },
+    color: {
+      type: [String],
+      required: false,
+      default: ["Vert"],
+    },
+
     reviews: [reviewsSchema],
   },
   {

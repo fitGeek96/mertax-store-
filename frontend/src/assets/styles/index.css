@@ -16,8 +16,9 @@ a {
 }
 
 h1,
-h2 {
-  color: #ecb7ea;
+h2,
+h6 {
+  color: #ff93fb;
 }
 
 .login-headline {
@@ -209,9 +210,13 @@ table th {
 
 @media (max-width: 767px) {
   header {
-    background: url("../headerBackG.jpg");
-    background-repeat: no-repeat;
-    background-size: cover;
+    background: rgb(162, 0, 255);
+    background: linear-gradient(
+      242deg,
+      rgba(162, 0, 255, 1) 0%,
+      rgba(228, 0, 208, 1) 0%,
+      rgba(255, 0, 189, 1) 34%
+    );
   }
 }
 

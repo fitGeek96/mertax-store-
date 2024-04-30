@@ -31,7 +31,7 @@ const CartScreen = () => {
   };
 
   const checkoutHandler = () => {
-    navigate("/login?redirect=/shipping");
+    navigate("/shipping");
   };
 
   const formatPrice = (price) => {
@@ -70,10 +70,10 @@ const CartScreen = () => {
                         <h6 className="mb-0">{item.name}</h6>
                       </Link>
                     </Col> */}
-                    <Col xs={4} className="text-center mt-3">
+                    <Col xs={6} className="text-center mt-3">
                       <p className="mb-0">DA {formatPrice(item.price)}</p>
                     </Col>
-                    <Col xs={4} className="text-center mt-3">
+                    <Col xs={6} className="text-center mt-3">
                       <Form.Control
                         as="select"
                         value={item.qty}
@@ -89,7 +89,26 @@ const CartScreen = () => {
                         ))}
                       </Form.Control>
                     </Col>
-                    <Col xs={4} className="text-center mt-3 py-3">
+                    <Col xs={6} className="text-center mt-3">
+                      <Form.Control
+                        as="select"
+                        value={item.size}
+                        onChange={(e) =>
+                          addToCartHandler(item, Number(e.target.value))
+                        }
+                        className="text-center w-75 mx-auto"
+                      >
+                        {Array.from(
+                          { length: item.sizeInStock },
+                          (v, i = 38) => (
+                            <option key={i} value={i + 2}>
+                              {i + 2}
+                            </option>
+                          ),
+                        )}
+                      </Form.Control>
+                    </Col>
+                    <Col xs={6} className="text-center mt-3 py-3">
                       <Button
                         variant="outline-danger"
                         size="sm"
@@ -115,8 +134,8 @@ const CartScreen = () => {
                     <strong>
                       {" "}
                       DA{" "}
-                      {cart.totalPrice
-                        ? `${formatPrice(cart.totalPrice)}`
+                      {cart?.totalPrice
+                        ? `${formatPrice(cart?.totalPrice)}`
                         : "00.0"}{" "}
                     </strong>
                   </Col>

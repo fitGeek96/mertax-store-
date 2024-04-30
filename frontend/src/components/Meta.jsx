@@ -12,7 +12,7 @@ const Meta = ({ title, description, keywords }) => {
 };
 
 Meta.defaultProps = {
-  title: "Boutique La Parisienne",
+  title: "Mertax Store",
   description: "We sell the latest fashion products",
   keywords: "girls, women, men, kids, fashion, clothing, shoes, accessories,",
 };

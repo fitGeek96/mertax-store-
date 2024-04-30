@@ -46,6 +46,10 @@ const PlaceOrder = () => {
     }
   };
 
+  const formatPrice = (price) => {
+    return price?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
+
   return (
     <>
       {/* <CheckoutSteps step1 step2 step3 step4 /> */}
@@ -54,9 +58,7 @@ const PlaceOrder = () => {
         <Col md={6} className="mt-2">
           <Card>
             <Card.Body>
-              <h5 className="text-center text-info mb-4">
-                Livraison Au 
-              </h5>
+              <h5 className="text-center text-info mb-4">Livraison Au</h5>
               <ListGroup variant="flush">
                 <ListGroup.Item>
                   <Row className="mt-1">
@@ -91,7 +93,7 @@ const PlaceOrder = () => {
                       Prix ​​total:
                     </Col>
                     <Col xs={12} md={6} className="text-md-center text-danger">
-                      <strong>DA {cart.totalPrice}</strong>
+                      <strong>DA {formatPrice(cart.totalPrice)}</strong>
                     </Col>
                   </Row>
                 </ListGroup.Item>
@@ -100,7 +102,7 @@ const PlaceOrder = () => {
                   <Row className="justify-content-center mt-3">
                     <Button
                       variant="danger text-white"
-                      disabled={cart.cartItems?.length === 0}
+                      disabled={cart.totalPrice === 0}
                       onClick={placeOrderHandler}
                     >
                       Confirmer La Commande

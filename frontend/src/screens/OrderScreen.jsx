@@ -135,7 +135,17 @@ const OrderScreen = () => {
                       <tr key={item.product} className="text-left">
                         <td className="align-middle">
                           <Image
-                            src={item.image}
+                            src={
+                              item.color === "Vert"
+                                ? `/images/r1.png`
+                                : item.color === "Mauve"
+                                ? `/images/r2.png`
+                                : item.color === "Noire"
+                                ? `/images/r3.png`
+                                : item.color === "Blanc"
+                                ? `/images/r4.png`
+                                : ""
+                            }
                             alt={item.name}
                             fluid
                             rounded

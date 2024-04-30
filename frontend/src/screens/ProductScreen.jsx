@@ -27,7 +27,7 @@ import { FaStar, FaComment, FaArrowLeft } from "react-icons/fa";
 const ProductScreen = () => {
   const { id: productId } = useParams();
 
-  const [qty, setQty] = useState(1);
+  const [qty, setQty] = useState(0);
   const [size, setSize] = useState(38);
   const [color, setColor] = useState("Vert");
   const [rating, setRating] = useState(0);
@@ -170,8 +170,8 @@ const ProductScreen = () => {
                         {Array.from(
                           { length: product?.countInStock },
                           (v, i) => (
-                            <option key={i} value={i + 1}>
-                              {i + 1}
+                            <option key={i} value={i}>
+                              {i}
                             </option>
                           ),
                         )}
@@ -234,8 +234,8 @@ const ProductScreen = () => {
                       {" "}
                       DA{" "}
                       {cart?.totalPrice
-                        ? `${formatPrice(product?.price * qty)}`
-                        : "00.0"}{" "}
+                        ? `${formatPrice(product?.price * qty * 1)}`
+                        : `00.0`}{" "}
                     </strong>
                   </Col>
                 </Row>

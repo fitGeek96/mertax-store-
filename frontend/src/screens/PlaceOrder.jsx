@@ -34,7 +34,8 @@ const PlaceOrder = () => {
         shippingAddress: cart.shippingAddress,
         paymentMethod: cart.paymentMethod,
         itemsPrice: cart.itemsPrice,
-        totalPrice: cart.totalPrice,
+        shippingPrice: cart.cartItems[0].shippingPrice,
+        totalPrice: cart.cartItems[0].totalPrice,
       }).unwrap();
 
       dispatch(clearCartItems());
@@ -93,7 +94,9 @@ const PlaceOrder = () => {
                       Prix ​​total:
                     </Col>
                     <Col xs={12} md={6} className="text-md-center text-danger">
-                      <strong>DA {formatPrice(cart.totalPrice)}</strong>
+                      <strong>
+                        DA {formatPrice(cart?.cartItems[0]?.totalPrice)}
+                      </strong>
                     </Col>
                   </Row>
                 </ListGroup.Item>

@@ -1,14 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Row,
   Col,
-  Image,
   ListGroup,
   Card,
   Button,
   Form,
-  ListGroupItem,
   Carousel,
 } from "react-bootstrap";
 import { Link, useParams, useNavigate } from "react-router-dom";
@@ -27,9 +25,20 @@ import { FaStar, FaComment, FaArrowLeft } from "react-icons/fa";
 const ProductScreen = () => {
   const { id: productId } = useParams();
 
+  const {
+    data: product,
+    isLoading,
+    isError,
+    refetch,
+  } = useGetProductDetailsQuery(productId);
+
   const [qty, setQty] = useState(0);
   const [size, setSize] = useState(38);
   const [color, setColor] = useState("Vert");
+  const [city, setCity] = useState("Alger");
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [shippingPrice, setShippingPrice] = useState(0);
+
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
 
@@ -39,13 +48,6 @@ const ProductScreen = () => {
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
 
-  const {
-    data: product,
-    isLoading,
-    isError,
-    refetch,
-  } = useGetProductDetailsQuery(productId);
-
   const [
     createReview,
     { isLoading: loadingProductReview, error: reviewError },
@@ -54,9 +56,67 @@ const ProductScreen = () => {
   const { userInfo } = useSelector((state) => state.auth);
   const userId = userInfo?._id;
 
+  const calculateTotalPrice = (productPrice, qty, state) => {
+    const statesWithShippingPrices = {
+      tipaza: 600,
+      medea: 600,
+      blida: 600,
+      bouira: 600,
+      "tizi ouzou": 600,
+      constantine: 600,
+      bejaia: 600,
+      skikda: 600,
+      oran: 600,
+      mila: 600,
+      mascara: 600,
+      setif: 600,
+      mostaganem: 600,
+      tlemcen: 700,
+      "sidi bel abbes": 700,
+      "ain temouchent": 700,
+      guelma: 700,
+      relizane: 700,
+      "oum el bouaghi": 700,
+      chlef: 700,
+      tissemsilt: 700,
+      jijel: 700,
+      "borjd bou ariridj": 700,
+      batna: 700,
+      tiaret: 750,
+      saida: 750,
+      annaba: 750,
+      "el tarf": 750,
+      "souk ahras": 800,
+      msila: 800,
+      tebessa: 900,
+      biskra: 900,
+      "el oued": 900,
+      ouergla: 900,
+      "ouled djellal": 900,
+      khenchla: 900,
+      "el mghaier": 900,
+      tougourt: 900,
+      ghardaia: 900,
+      laghouat: 900,
+      djelfa: 900,
+      bechar: 1000,
+      naama: 1000,
+      "el bayadh": 1000,
+      alger: 400,
+    };
+
+    const shippingPrice = statesWithShippingPrices[state.toLowerCase()] || 0;
+    setShippingPrice(shippingPrice);
+
+    return productPrice * qty + shippingPrice;
+  };
+
   const addToCartHandler = (product, qty, size, color) => {
-    dispatch(addToCart({ ...product, qty, size, color }));
-    console.log({ ...product, qty, size, color });
+    const totalPrice = calculateTotalPrice(product?.price, qty, city);
+    setTotalPrice(totalPrice);
+    dispatch(
+      addToCart({ ...product, qty, size, color, shippingPrice, totalPrice }),
+    );
   };
 
   const formatPrice = (price) => {
@@ -157,13 +217,15 @@ const ProductScreen = () => {
                         as="select"
                         value={qty}
                         onChange={(e) => {
-                          setQty(Number(e.target.value));
-                          addToCartHandler(
-                            product,
-                            Number(e.target.value),
-                            size,
-                            color,
+                          const newQty = Number(e.target.value);
+                          setQty(newQty);
+                          const newTotalPrice = calculateTotalPrice(
+                            product?.price,
+                            newQty,
+                            city,
                           );
+                          setTotalPrice(newTotalPrice);
+                          addToCartHandler(product, newQty, size, color);
                         }}
                         className="text-center p-0 m-auto w-50"
                       >
@@ -228,14 +290,94 @@ const ProductScreen = () => {
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
+                  <Col>Wilaya:</Col>
+                  <Col>
+                    <Form.Control
+                      as="select"
+                      value={city}
+                      onChange={(e) => {
+                        const newCity = e.target.value;
+                        setCity(newCity);
+                        const newTotalPrice = calculateTotalPrice(
+                          product?.price,
+                          qty,
+                          newCity,
+                        );
+                        setTotalPrice(newTotalPrice);
+                      }}
+                      className="text-center p-0 m-auto w-50"
+                    >
+                      <option value="">{city}</option>
+                      <option value="tipaza">Tipaza</option>
+                      <option value="medea">Medea</option>
+                      <option value="blida">Blida</option>
+                      <option value="bouira">Bouira</option>
+                      <option value="tizi ouzou">Tizi Ouzou</option>
+                      <option value="constantine">Constantine</option>
+                      <option value="bejaia">Bejaia</option>
+                      <option value="skikda">Skikda</option>
+                      <option value="oran">Oran</option>
+                      <option value="mila">Mila</option>
+                      <option value="mascara">Mascara</option>
+                      <option value="setif">Setif</option>
+                      <option value="mostaganem">Mostaganem</option>
+                      <option value="tlemcen">Tlemcen</option>
+                      <option value="sidi bel abbes">Sidi Bel Abbes</option>
+                      <option value="ain temouchent">Ain Temouchent</option>
+                      <option value="guelma">Guelma</option>
+                      <option value="relizane">Relizane</option>
+                      <option value="oum el bouaghi">Oum El Bouaghi</option>
+                      <option value="chlef">Chlef</option>
+                      <option value="tissemsilt">Tissemsilt</option>
+                      <option value="jijel">Jijel</option>
+                      <option value="borjd bou ariridj">
+                        Borjd Bou Ariridj
+                      </option>
+                      <option value="batna">Batna</option>
+                      <option value="tiaret">Tiaret</option>
+                      <option value="saida">Saida</option>
+                      <option value="annaba">Annaba</option>
+                      <option value="el tarf">El Tarf</option>
+                      <option value="souk ahras">Souk Ahras</option>
+                      <option value="msila">Msila</option>
+                      <option value="tebessa">Tebessa</option>
+                      <option value="biskra">Biskra</option>
+                      <option value="el oued">El Oued</option>
+                      <option value="ouergla">Ouergla</option>
+                      <option value="ouled djellal">Ouled Djellal</option>
+                      <option value="khenchla">Khenchla</option>
+                      <option value="el mghaier">El Mghaier</option>
+                      <option value="tougourt">Tougourt</option>
+                      <option value="ghardaia">Ghardaia</option>
+                      <option value="laghouat">Laghouat</option>
+                      <option value="djelfa">Djelfa</option>
+                      <option value="bechar">Bechar</option>
+                      <option value="naama">Naama</option>
+                      <option value="el bayadh">El Bayadh</option>
+                      <option value="alger">Alger</option>
+                      {/* Add other options for all states */}
+                    </Form.Control>
+                  </Col>
+                </Row>
+              </ListGroup.Item>
+
+              <ListGroup.Item>
+                <Row>
+                  <Col>Prix de Livraison:</Col>
+                  <Col className="text-center text-danger">
+                    <strong>
+                      DA <span> {formatPrice(shippingPrice)}</span>
+                    </strong>
+                  </Col>
+                </Row>
+              </ListGroup.Item>
+
+              <ListGroup.Item>
+                <Row>
                   <Col>Prix Total:</Col>
                   <Col className="text-center text-danger">
                     <strong>
-                      {" "}
-                      DA{" "}
-                      {cart?.totalPrice
-                        ? `${formatPrice(product?.price * qty * 1)}`
-                        : `00.0`}{" "}
+                      DA <span> {formatPrice(totalPrice)}</span>
                     </strong>
                   </Col>
                 </Row>

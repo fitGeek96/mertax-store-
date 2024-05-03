@@ -285,7 +285,6 @@ const ProductScreen = () => {
                       value={color}
                       onChange={(e) => {
                         setColor(e.target.value);
-                        addToCartHandler(product, qty, size, e.target.value);
                       }}
                       className="text-center p-0 m-auto w-50"
                     >

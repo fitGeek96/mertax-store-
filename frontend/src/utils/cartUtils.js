@@ -10,11 +10,9 @@ export const updateCart = (state) => {
     state?.cartItems?.reduce((acc, item) => acc + item.price * item.qty, 0),
   );
   // Calculate shipping price based on Wilayas
-  // state.shippingPrice = addDecimals(state.itemsPrice > 100 ? 0 : 10);
-  // Calculate tax price
-  state.taxPrice = addDecimals(Number(0.15 * state.itemsPrice));
-  // Calculate total price
-  state.totalPrice = addDecimals(Number(state.itemsPrice));
+  state.shippingPrice = state?.cartItems?.shippingPrice;
+
+  state.totalPrice = state?.cartItems?.totalPrice;
 
   localStorage.setItem("cart", JSON.stringify(state));
 };

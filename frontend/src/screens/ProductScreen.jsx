@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Row,
@@ -24,6 +24,54 @@ import { FaStar, FaComment, FaArrowLeft } from "react-icons/fa";
 
 const ProductScreen = () => {
   const { id: productId } = useParams();
+
+  const statesWithShippingPrices = {
+    tipaza: 600,
+    medea: 600,
+    blida: 600,
+    bouira: 600,
+    "tizi ouzou": 600,
+    constantine: 600,
+    bejaia: 600,
+    skikda: 600,
+    oran: 600,
+    mila: 600,
+    mascara: 600,
+    setif: 600,
+    mostaganem: 600,
+    tlemcen: 700,
+    "sidi bel abbes": 700,
+    "ain temouchent": 700,
+    guelma: 700,
+    relizane: 700,
+    "oum el bouaghi": 700,
+    chlef: 700,
+    tissemsilt: 700,
+    jijel: 700,
+    "borjd bou ariridj": 700,
+    batna: 700,
+    tiaret: 750,
+    saida: 750,
+    annaba: 750,
+    "el tarf": 750,
+    "souk ahras": 800,
+    msila: 800,
+    tebessa: 900,
+    biskra: 900,
+    "el oued": 900,
+    ouergla: 900,
+    "ouled djellal": 900,
+    khenchla: 900,
+    "el mghaier": 900,
+    tougourt: 900,
+    ghardaia: 900,
+    laghouat: 900,
+    djelfa: 900,
+    bechar: 1000,
+    naama: 1000,
+    "el bayadh": 1000,
+    alger: 400,
+  };
 
   const {
     data: product,
@@ -56,72 +104,35 @@ const ProductScreen = () => {
   const { userInfo } = useSelector((state) => state.auth);
   const userId = userInfo?._id;
 
-  const calculateTotalPrice = (productPrice, qty, state) => {
-    const statesWithShippingPrices = {
-      tipaza: 600,
-      medea: 600,
-      blida: 600,
-      bouira: 600,
-      "tizi ouzou": 600,
-      constantine: 600,
-      bejaia: 600,
-      skikda: 600,
-      oran: 600,
-      mila: 600,
-      mascara: 600,
-      setif: 600,
-      mostaganem: 600,
-      tlemcen: 700,
-      "sidi bel abbes": 700,
-      "ain temouchent": 700,
-      guelma: 700,
-      relizane: 700,
-      "oum el bouaghi": 700,
-      chlef: 700,
-      tissemsilt: 700,
-      jijel: 700,
-      "borjd bou ariridj": 700,
-      batna: 700,
-      tiaret: 750,
-      saida: 750,
-      annaba: 750,
-      "el tarf": 750,
-      "souk ahras": 800,
-      msila: 800,
-      tebessa: 900,
-      biskra: 900,
-      "el oued": 900,
-      ouergla: 900,
-      "ouled djellal": 900,
-      khenchla: 900,
-      "el mghaier": 900,
-      tougourt: 900,
-      ghardaia: 900,
-      laghouat: 900,
-      djelfa: 900,
-      bechar: 1000,
-      naama: 1000,
-      "el bayadh": 1000,
-      alger: 400,
-    };
-
-    const shippingPrice = statesWithShippingPrices[state.toLowerCase()] || 0;
-    setShippingPrice(shippingPrice);
-
-    return productPrice * qty + shippingPrice;
-  };
-
-  const addToCartHandler = (product, qty, size, color) => {
-    const totalPrice = calculateTotalPrice(product?.price, qty, city);
-    setTotalPrice(totalPrice);
-    dispatch(
-      addToCart({ ...product, qty, size, color, shippingPrice, totalPrice }),
-    );
-  };
-
   const formatPrice = (price) => {
     return price?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
+
+  const calculateTotalPrice = (productPrice, qty, city) => {
+    const shippingPrice = statesWithShippingPrices[city?.toLowerCase()] || 0;
+    return productPrice * qty + shippingPrice;
+  };
+
+  const addToCartHandler = (product, qty, size, color, newCity) => {
+    const newTotalPrice = calculateTotalPrice(product?.price, qty, newCity);
+
+    setTotalPrice(newTotalPrice);
+
+    dispatch(
+      addToCart({
+        ...product,
+        qty,
+        size,
+        color,
+        shippingPrice,
+        totalPrice: newTotalPrice,
+      }),
+    );
+  };
+
+  useEffect(() => {
+    setShippingPrice(statesWithShippingPrices[city.toLowerCase()] || 0);
+  }, [city]);
 
   return (
     <>
@@ -225,7 +236,6 @@ const ProductScreen = () => {
                             city,
                           );
                           setTotalPrice(newTotalPrice);
-                          addToCartHandler(product, newQty, size, color);
                         }}
                         className="text-center p-0 m-auto w-50"
                       >
@@ -303,7 +313,9 @@ const ProductScreen = () => {
                           qty,
                           newCity,
                         );
+
                         setTotalPrice(newTotalPrice);
+                        addToCartHandler(product, qty, size, color, newCity);
                       }}
                       className="text-center p-0 m-auto w-50"
                     >

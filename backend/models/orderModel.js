@@ -22,6 +22,12 @@ const orderSchema = new mongoose.Schema(
         image: {
           type: String,
         },
+        shippingPrice: {
+          type: Number,
+        },
+        totalPrice: {
+          type: Number,
+        },
         product: {
           type: mongoose.Schema.Types.ObjectId,
           ref: "Product",
